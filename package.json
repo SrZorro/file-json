@@ -1,0 +1,29 @@
+{
+  "name": "file-json",
+  "version": "1.0.0",
+  "description": "Read json, do stuff, write json",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register 'test/**/*.ts'"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "Fox salva <fox@foxdev.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SrZorro/file-json.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.32",
+    "eslint": "^7.21.0",
+    "mocha": "^8.3.1",
+    "mocha-junit-reporter": "^2.0.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
