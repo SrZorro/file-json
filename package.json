@@ -1,6 +1,6 @@
 {
-  "name": "file-json",
-  "version": "1.0.0",
+  "name": "@srzorro/file-json",
+  "version": "1.0.1",
   "description": "Read json, do stuff, write json",
   "main": "index.js",
   "scripts": {

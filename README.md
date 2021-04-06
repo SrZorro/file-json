@@ -1,13 +1,13 @@
 # file-json
 
-`npm i file-json`
+`npm i @srzorro/file-json`
 
 For when you want to store stuff in a json file, but also want to read and write it easily.
 
 ## Usage
 
 ```typescript
-import FileJson from "file-json";
+import FileJson from "@srzorro/file-json";
 
 interface IJson {
     name: string;
