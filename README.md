@@ -15,21 +15,15 @@ interface IJson {
     isEnabled: boolean;
 }
 
-const json = FileJson<IJson>("config.json");
+const json = new FileJson<IJson>("config.json");
 
 (async () => {
     // Read
     await json.r();
 
-    console.log(json);
-    // {
-    //   d: { name: "foo", version: "1.1", isEnabled: false },
-    //   r: [AsyncFunction: read],
-    //   w: [AsyncFunction: write]
-    // }
-
     // Data container
     console.log(json.d);
+
     // Edit data
     json.d.isEnabled = true;
 

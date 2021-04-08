@@ -1,50 +1,47 @@
 import fs from "fs/promises";
-import fssync from "fs";
 import path from "path";
 
-/**
- * ISchema: Representation of the json
- */
-export interface IFileJson<ISchema> {
-    /**
-     * Data container
-     */
-    d: ISchema;
-    /**
-     * Read json from file
-     */
-    r: () => Promise<boolean>;
-    /**
-     * Write json to file
-     */
-    w: () => Promise<boolean>;
-}
+export default class FileJson<ISchema> {
+    private data: ISchema | null = null;
+    public jsonPath: string;
+    private readonly def: ISchema;
+    constructor(jsonPth: string | string[], def = {} as ISchema) {
+        if (typeof jsonPth === "string")
+            jsonPth = [jsonPth];
 
-export default function FileJson<ISchema>(...filePaths: string[]): IFileJson<ISchema> {
-    const resolvedPath = path.resolve(...filePaths);
-    {
-        // Guards
-        const exists = fssync.existsSync(resolvedPath);
-        if (!exists)
-            throw new Error(`File '${resolvedPath}' does not exist`)
-
-        const parsed = path.parse(resolvedPath);
-        if (parsed.ext !== ".json")
-            throw new Error(`Path at '${resolvedPath}' doesn't have a .json extension`);
+        this.jsonPath = path.join(...jsonPth);
+        this.def = def;
     }
 
-    const container = {
-        d: {} as ISchema,
-        r: async function read () {
-            const file = await fs.readFile(resolvedPath, "utf8");
-            container.d = JSON.parse(file);
-            return true;
-        },
-        w: async function write () {
-            await fs.writeFile(resolvedPath, JSON.stringify(container.d, null, 2));
-            return true;
+    private async read(): Promise<ISchema> {
+        try {
+            const raw = await fs.readFile(this.jsonPath, "utf8")
+            this.data = JSON.parse(raw);
+        } catch (err) {
+            if (err.code !== "ENOENT")
+                throw err;
         }
-    };
+        return this.d;
+    }
 
-    return container;
+    private async write() {
+        await fs.writeFile(this.jsonPath, JSON.stringify(this.data, null, 2));
+    }
+
+    public async r(): Promise<ISchema> {
+        const json = await this.read();
+        return json;
+    }
+
+    public async w(): Promise<boolean> {
+        await this.write();
+        return true;
+    }
+
+    public get d() {
+        if (this.data === null)
+            return this.def;
+        else
+            return this.data;
+    }
 }
